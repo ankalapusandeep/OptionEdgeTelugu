@@ -1,0 +1,2003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option Edge Telugu — NIFTY50 Trading Mastery</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #FFB800;
+    --gold-dim: #CC9200;
+    --green: #00FF88;
+    --red: #FF3B3B;
+    --bg: #050810;
+    --bg2: #0A0F1E;
+    --bg3: #0D1428;
+    --surface: #111827;
+    --border: rgba(255,184,0,0.15);
+    --text: #E8EAF0;
+    --muted: #7A8096;
+    --glow-gold: 0 0 30px rgba(255,184,0,0.4);
+    --glow-green: 0 0 20px rgba(0,255,136,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom Cursor */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1.5px solid rgba(255,184,0,0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.15s ease;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+
+  /* ====== CANVAS BG ====== */
+  #canvas-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ====== NAV ====== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 18px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(180deg, rgba(5,8,16,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+  }
+
+  .nav-logo-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, #1a1200, #3d2d00);
+    border: 1.5px solid var(--gold);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: var(--glow-gold);
+  }
+
+  .nav-logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  .nav-logo-text span:first-child {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+
+  .nav-logo-text span:last-child {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    background: var(--gold);
+    color: #000;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: var(--glow-gold);
+  }
+
+  .nav-cta:hover {
+    background: #fff;
+    transform: translateY(-1px);
+  }
+
+  /* ====== HERO ====== */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 60px 80px;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .hero-grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,184,0,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,184,0,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 900px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,184,0,0.08);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.5); }
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(64px, 10vw, 120px);
+    line-height: 0.9;
+    letter-spacing: 4px;
+    margin-bottom: 24px;
+    animation: fadeDown 0.8s 0.1s ease both;
+  }
+
+  .hero-title .line1 { color: var(--text); display: block; }
+  .hero-title .line2 {
+    color: var(--gold);
+    display: block;
+    text-shadow: var(--glow-gold);
+    position: relative;
+  }
+
+  .hero-title .line3 {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+    display: block;
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 1px;
+    max-width: 600px;
+    margin: 0 auto 48px;
+    line-height: 1.6;
+    animation: fadeDown 0.8s 0.2s ease both;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-bottom: 48px;
+    animation: fadeDown 0.8s 0.3s ease both;
+  }
+
+  .hero-stat {
+    text-align: center;
+  }
+
+  .hero-stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px;
+    color: var(--gold);
+    line-height: 1;
+    text-shadow: var(--glow-gold);
+  }
+
+  .hero-stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .hero-stat-divider {
+    width: 1px;
+    background: var(--border);
+    align-self: stretch;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeDown 0.8s 0.4s ease both;
+  }
+
+  .btn-primary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--gold);
+    color: #000;
+    padding: 16px 36px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: var(--glow-gold);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 0 50px rgba(255,184,0,0.6);
+  }
+
+  .btn-secondary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    color: var(--text);
+    padding: 16px 36px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    transform: translateY(-3px);
+  }
+
+  /* Floating ticker */
+  .ticker-wrap {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(10,15,30,0.9);
+    border-top: 1px solid var(--border);
+    overflow: hidden;
+    height: 40px;
+    z-index: 3;
+  }
+
+  .ticker-track {
+    display: flex;
+    gap: 0;
+    animation: tickerScroll 30s linear infinite;
+    white-space: nowrap;
+  }
+
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 32px;
+    height: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    border-right: 1px solid var(--border);
+  }
+
+  .ticker-item .sym { color: var(--gold); }
+  .ticker-item .up { color: var(--green); }
+  .ticker-item .down { color: var(--red); }
+
+  @keyframes tickerScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ====== SECTION BASE ====== */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 60px;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 70px;
+  }
+
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 6vw, 72px);
+    letter-spacing: 3px;
+    line-height: 1;
+    color: var(--text);
+  }
+
+  .section-title span { color: var(--gold); }
+
+  .section-line {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin: 20px auto 0;
+  }
+
+  /* ====== ABOUT ====== */
+  #about {
+    background: var(--bg2);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .about-visual {
+    position: relative;
+  }
+
+  .about-card-3d {
+    background: linear-gradient(135deg, var(--bg3), var(--surface));
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.4s ease;
+    overflow: hidden;
+  }
+
+  .about-card-3d::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .about-card-3d:hover {
+    transform: rotateY(-8deg) rotateX(4deg) translateZ(20px);
+    box-shadow: 20px 20px 60px rgba(0,0,0,0.6), var(--glow-gold);
+  }
+
+  .about-logo-big {
+    font-size: 80px;
+    text-align: center;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 20px rgba(255,184,0,0.5));
+  }
+
+  .about-channel-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--gold);
+    text-align: center;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+
+  .about-handle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    letter-spacing: 2px;
+  }
+
+  .about-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 24px 0;
+  }
+
+  .about-mini-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .about-mini-stat {
+    background: rgba(255,184,0,0.05);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .about-mini-stat-n {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--gold);
+  }
+
+  .about-mini-stat-l {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .about-text h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+
+  .about-text h2 span { color: var(--gold); }
+
+  .about-text p {
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .about-features {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .about-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 20px;
+    background: rgba(255,184,0,0.04);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+
+  .about-feature:hover {
+    background: rgba(255,184,0,0.08);
+    transform: translateX(6px);
+  }
+
+  .about-feature-icon { font-size: 22px; flex-shrink: 0; }
+
+  .about-feature-text strong {
+    display: block;
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .about-feature-text span {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* ====== VIDEOS ====== */
+  #videos {
+    background: var(--bg);
+  }
+
+  .videos-filter {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 10px 24px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .filter-btn.active,
+  .filter-btn:hover {
+    background: var(--gold);
+    color: #000;
+    border-color: var(--gold);
+  }
+
+  .videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .video-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+  }
+
+  .video-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: var(--gold);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), var(--glow-gold);
+  }
+
+  .video-thumb {
+    position: relative;
+    aspect-ratio: 16/9;
+    background: var(--bg3);
+    overflow: hidden;
+  }
+
+  .video-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+  }
+
+  .video-card:hover .video-thumb-img {
+    transform: scale(1.05);
+  }
+
+  .video-play-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .video-card:hover .video-play-overlay { opacity: 1; }
+
+  .play-btn {
+    width: 56px; height: 56px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: var(--glow-gold);
+    transform: scale(0.8);
+    transition: transform 0.3s;
+  }
+
+  .video-card:hover .play-btn { transform: scale(1); }
+
+  .video-duration {
+    position: absolute;
+    bottom: 10px; right: 10px;
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+  }
+
+  .video-live-badge {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: var(--red);
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .video-live-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    animation: pulse 1s infinite;
+  }
+
+  .video-info {
+    padding: 20px;
+  }
+
+  .video-info h3 {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    color: var(--text);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .video-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .video-views {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .video-age {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .view-all-btn {
+    display: block;
+    text-align: center;
+    margin: 48px auto 0;
+    width: fit-content;
+    padding: 16px 48px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 8px;
+    transition: all 0.25s;
+    font-family: 'Rajdhani', sans-serif;
+  }
+
+  .view-all-btn:hover {
+    background: var(--gold);
+    color: #000;
+    box-shadow: var(--glow-gold);
+    transform: translateY(-2px);
+  }
+
+  /* ====== LIVE STREAMS ====== */
+  #live {
+    background: var(--bg2);
+  }
+
+  .live-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .live-card {
+    background: var(--surface);
+    border: 1px solid rgba(255,59,59,0.2);
+    border-radius: 14px;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s ease;
+  }
+
+  .live-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--red);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4), 0 0 20px rgba(255,59,59,0.2);
+  }
+
+  .live-thumb {
+    position: relative;
+    aspect-ratio: 16/9;
+    background: #1a0808;
+  }
+
+  .live-thumb-inner {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a0808, #0d0d1a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+  }
+
+  .live-badge {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: var(--red);
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .live-badge .dot {
+    width: 6px; height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    animation: pulse 1s infinite;
+  }
+
+  .live-card-info {
+    padding: 16px;
+  }
+
+  .live-card-info h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .live-card-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* ====== PLAYLISTS ====== */
+  #playlists {
+    background: var(--bg);
+  }
+
+  .playlists-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .playlist-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+
+  .playlist-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--green));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .playlist-card:hover {
+    transform: translateY(-10px) rotateX(3deg);
+    border-color: var(--gold);
+    box-shadow: 0 30px 70px rgba(0,0,0,0.5), var(--glow-gold);
+  }
+
+  .playlist-card:hover::before { opacity: 1; }
+
+  .playlist-thumb {
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, var(--bg3), #1a1200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 52px;
+    position: relative;
+  }
+
+  .playlist-count {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: rgba(0,0,0,0.8);
+    color: var(--gold);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    border: 1px solid var(--border);
+  }
+
+  .playlist-info {
+    padding: 20px;
+  }
+
+  .playlist-info h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .playlist-info p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ====== TELEGRAM ====== */
+  #telegram {
+    background: var(--bg2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #telegram::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,136,204,0.08) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .telegram-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .telegram-info h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    letter-spacing: 3px;
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+
+  .telegram-info h2 span { color: #29B6F6; }
+
+  .telegram-info p {
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+
+  .telegram-perks {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+
+  .telegram-perk {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 16px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .telegram-perk-icon {
+    width: 36px; height: 36px;
+    background: rgba(41,182,246,0.1);
+    border: 1px solid rgba(41,182,246,0.2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .telegram-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #0088cc, #00b4d8);
+    color: #fff;
+    padding: 18px 40px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 0 30px rgba(0,136,204,0.4);
+  }
+
+  .telegram-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 50px rgba(0,136,204,0.6);
+  }
+
+  .telegram-preview {
+    position: relative;
+  }
+
+  .tg-phone {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 24px;
+    max-width: 340px;
+    margin: 0 auto;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+    transform: perspective(1000px) rotateY(-10deg);
+    transition: transform 0.4s;
+  }
+
+  .tg-phone:hover {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+
+  .tg-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .tg-avatar {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, #1a1200, #3d2d00);
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .tg-channel-name {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text);
+  }
+
+  .tg-subs {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .tg-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .tg-msg {
+    background: rgba(255,184,0,0.06);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+    position: relative;
+  }
+
+  .tg-msg-time {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 1px;
+  }
+
+  .tg-msg .bull { color: var(--green); font-weight: 700; }
+  .tg-msg .bear { color: var(--red); font-weight: 700; }
+  .tg-msg .lvl { color: var(--gold); font-weight: 700; }
+
+  .tg-online {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 1px;
+    margin-left: auto;
+  }
+
+  /* ====== CTA ====== */
+  #cta {
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg3) 100%);
+    text-align: center;
+    padding: 120px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #cta::before {
+    content: '';
+    position: absolute;
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(255,184,0,0.06) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .cta-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 7vw, 90px);
+    letter-spacing: 4px;
+    line-height: 1;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .cta-title span { color: var(--gold); text-shadow: var(--glow-gold); }
+
+  .cta-sub {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 500px;
+    margin: 0 auto 48px;
+    line-height: 1.6;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .btn-yt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #FF0000;
+    color: #fff;
+    padding: 18px 40px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 0 30px rgba(255,0,0,0.3);
+  }
+
+  .btn-yt:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 50px rgba(255,0,0,0.5);
+  }
+
+  .btn-tg {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #0088cc;
+    color: #fff;
+    padding: 18px 40px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 0 30px rgba(0,136,204,0.3);
+  }
+
+  .btn-tg:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 50px rgba(0,136,204,0.5);
+  }
+
+  /* ====== FOOTER ====== */
+  footer {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 48px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--gold);
+    letter-spacing: 3px;
+  }
+
+  .footer-disclaimer {
+    font-size: 12px;
+    color: var(--muted);
+    max-width: 500px;
+    text-align: center;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--gold); }
+
+  /* ====== ANIMATIONS ====== */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ====== SHORTS STRIP ====== */
+  #shorts {
+    background: var(--bg3);
+    padding: 80px 60px;
+  }
+
+  .shorts-scroll {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+    max-width: 1300px;
+    margin: 0 auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) transparent;
+  }
+
+  .short-card {
+    flex-shrink: 0;
+    width: 180px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s ease;
+  }
+
+  .short-card:hover {
+    transform: translateY(-8px) scale(1.04);
+    border-color: var(--gold);
+    box-shadow: var(--glow-gold);
+  }
+
+  .short-thumb {
+    aspect-ratio: 9/16;
+    background: linear-gradient(135deg, var(--bg), var(--bg3));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    position: relative;
+  }
+
+  .short-thumb-chart {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, transparent, rgba(0,255,136,0.1));
+  }
+
+  .short-info {
+    padding: 12px;
+  }
+
+  .short-info span {
+    font-size: 12px;
+    color: var(--muted);
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .short-views {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--green) !important;
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    section { padding: 70px 24px; }
+    .about-grid, .telegram-layout { grid-template-columns: 1fr; gap: 40px; }
+    .playlists-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 24px; }
+    footer { flex-direction: column; gap: 20px; text-align: center; }
+    #hero { padding: 100px 24px 80px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Animated Canvas Background -->
+<canvas id="canvas-bg"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">⚡</div>
+    <div class="nav-logo-text">
+      <span>Option Edge</span>
+      <span>Telugu</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#videos">Videos</a></li>
+    <li><a href="#live">Live</a></li>
+    <li><a href="#playlists">Playlists</a></li>
+    <li><a href="#telegram">Telegram</a></li>
+  </ul>
+  <a href="https://t.me/optionedgetelugu" target="_blank" class="nav-cta">Join Channel</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">⚡ Live Market Analysis Every Day</div>
+    <h1 class="hero-title">
+      <span class="line1">Master the</span>
+      <span class="line2">NIFTY50</span>
+      <span class="line3">Edge</span>
+    </h1>
+    <p class="hero-subtitle">
+      Professional options trading education in Telugu. Daily market analysis, key levels, live sessions & trading strategies.
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num" data-count="489">0</div>
+        <div class="hero-stat-label">Subscribers</div>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" data-count="612">0</div>
+        <div class="hero-stat-label">Videos</div>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" data-count="81">0</div>
+        <div class="hero-stat-label">Telegram Members</div>
+      </div>
+    </div>
+    <div class="hero-buttons">
+      <a href="https://www.youtube.com/@optionedge9" target="_blank" class="btn-primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        Watch on YouTube
+      </a>
+      <a href="https://t.me/optionedgetelugu" target="_blank" class="btn-secondary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        Join Telegram
+      </a>
+    </div>
+  </div>
+
+  <!-- Ticker -->
+  <div class="ticker-wrap">
+    <div class="ticker-track" id="ticker">
+      <div class="ticker-item"><span class="sym">NIFTY50</span><span class="up">▲ 24,321.50 +0.42%</span></div>
+      <div class="ticker-item"><span class="sym">BANKNIFTY</span><span class="down">▼ 52,180.25 -0.18%</span></div>
+      <div class="ticker-item"><span class="sym">SENSEX</span><span class="up">▲ 80,102.40 +0.35%</span></div>
+      <div class="ticker-item"><span class="sym">FINNIFTY</span><span class="up">▲ 23,650.00 +0.28%</span></div>
+      <div class="ticker-item"><span class="sym">MIDCAP50</span><span class="down">▼ 14,980.75 -0.11%</span></div>
+      <div class="ticker-item"><span class="sym">CRUDE OIL</span><span class="up">▲ ₹6,240.00 +1.2%</span></div>
+      <div class="ticker-item"><span class="sym">GOLD</span><span class="up">▲ ₹72,400 +0.6%</span></div>
+      <!-- Duplicate for seamless loop -->
+      <div class="ticker-item"><span class="sym">NIFTY50</span><span class="up">▲ 24,321.50 +0.42%</span></div>
+      <div class="ticker-item"><span class="sym">BANKNIFTY</span><span class="down">▼ 52,180.25 -0.18%</span></div>
+      <div class="ticker-item"><span class="sym">SENSEX</span><span class="up">▲ 80,102.40 +0.35%</span></div>
+      <div class="ticker-item"><span class="sym">FINNIFTY</span><span class="up">▲ 23,650.00 +0.28%</span></div>
+      <div class="ticker-item"><span class="sym">MIDCAP50</span><span class="down">▼ 14,980.75 -0.11%</span></div>
+      <div class="ticker-item"><span class="sym">CRUDE OIL</span><span class="up">▲ ₹6,240.00 +1.2%</span></div>
+      <div class="ticker-item"><span class="sym">GOLD</span><span class="up">▲ ₹72,400 +0.6%</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-visual reveal">
+      <div class="about-card-3d">
+        <div class="about-logo-big">⚡🐂</div>
+        <div class="about-channel-name">OPTION EDGE TELUGU</div>
+        <div class="about-handle">@optionedge9 · t.me/optionedgetelugu</div>
+        <div class="about-divider"></div>
+        <div class="about-mini-stats">
+          <div class="about-mini-stat">
+            <div class="about-mini-stat-n">489</div>
+            <div class="about-mini-stat-l">YT Subs</div>
+          </div>
+          <div class="about-mini-stat">
+            <div class="about-mini-stat-n">612</div>
+            <div class="about-mini-stat-l">Videos</div>
+          </div>
+          <div class="about-mini-stat">
+            <div class="about-mini-stat-n">81</div>
+            <div class="about-mini-stat-l">TG Members</div>
+          </div>
+          <div class="about-mini-stat">
+            <div class="about-mini-stat-n">183</div>
+            <div class="about-mini-stat-l">Photos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-text reveal">
+      <h2>Unique Style of<br><span>Trading Setup</span></h2>
+      <p>Welcome to Option Edge Telugu — where professional options trading meets clear Telugu explanation. Daily market analysis, NIFTY50 key levels, and live trading sessions.</p>
+      <p>Educational content designed to help you understand the Indian stock market with a unique analytical approach.</p>
+      <div class="about-features">
+        <div class="about-feature">
+          <div class="about-feature-icon">📊</div>
+          <div class="about-feature-text">
+            <strong>Daily NIFTY50 Analysis</strong>
+            <span>Key levels, support & resistance explained in Telugu</span>
+          </div>
+        </div>
+        <div class="about-feature">
+          <div class="about-feature-icon">🔴</div>
+          <div class="about-feature-text">
+            <strong>Live Trading Sessions</strong>
+            <span>Watch real-time market action and decision making</span>
+          </div>
+        </div>
+        <div class="about-feature">
+          <div class="about-feature-icon">📚</div>
+          <div class="about-feature-text">
+            <strong>Options Trading Education</strong>
+            <span>Basics to advanced strategies — all in Telugu</span>
+          </div>
+        </div>
+        <div class="about-feature">
+          <div class="about-feature-icon">💡</div>
+          <div class="about-feature-text">
+            <strong>Premium Mentorship</strong>
+            <span>Chapter-wise learning material for serious traders</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section id="videos">
+  <div class="section-header reveal">
+    <span class="section-tag">Latest Content</span>
+    <h2 class="section-title">Recent <span>Videos</span></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="videos-filter reveal">
+    <button class="filter-btn active" onclick="filterVideos('all', this)">All</button>
+    <button class="filter-btn" onclick="filterVideos('analysis', this)">Market Analysis</button>
+    <button class="filter-btn" onclick="filterVideos('global', this)">Global Markets</button>
+    <button class="filter-btn" onclick="filterVideos('strategy', this)">Strategy</button>
+  </div>
+
+  <div class="videos-grid" id="videosGrid">
+    <!-- Populated by JS -->
+  </div>
+
+  <a href="https://www.youtube.com/@optionedge9/videos" target="_blank" class="view-all-btn reveal">
+    View All 612 Videos →
+  </a>
+</section>
+
+<!-- SHORTS -->
+<section id="shorts">
+  <div class="section-header reveal">
+    <span class="section-tag">Quick Bites</span>
+    <h2 class="section-title">Shorts <span>&</span> Charts</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="shorts-scroll reveal">
+    <!-- Shorts cards -->
+  </div>
+</section>
+
+<!-- LIVE -->
+<section id="live">
+  <div class="section-header reveal">
+    <span class="section-tag">Live Sessions</span>
+    <h2 class="section-title">Live <span>Trading</span></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="live-grid" id="liveGrid">
+    <!-- Populated by JS -->
+  </div>
+
+  <a href="https://www.youtube.com/@optionedge9/streams" target="_blank" class="view-all-btn reveal" style="margin-top:40px;">
+    View All Live Sessions →
+  </a>
+</section>
+
+<!-- PLAYLISTS -->
+<section id="playlists">
+  <div class="section-header reveal">
+    <span class="section-tag">Structured Learning</span>
+    <h2 class="section-title">Learn From <span>Playlists</span></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="playlists-grid reveal">
+    <a href="https://www.youtube.com/@optionedge9/playlists" target="_blank" class="playlist-card">
+      <div class="playlist-thumb">
+        📈
+        <div class="playlist-count">4 VIDEOS</div>
+      </div>
+      <div class="playlist-info">
+        <h3>Basics of Options Trading</h3>
+        <p>How options work, terminology, and foundational concepts for beginners</p>
+      </div>
+    </a>
+    <a href="https://www.youtube.com/@optionedge9/playlists" target="_blank" class="playlist-card">
+      <div class="playlist-thumb">
+        🏦
+        <div class="playlist-count">5 VIDEOS</div>
+      </div>
+      <div class="playlist-info">
+        <h3>Basics of Stock Market</h3>
+        <p>How the stock market works — from indices to order flow</p>
+      </div>
+    </a>
+    <a href="https://www.youtube.com/@optionedge9/playlists" target="_blank" class="playlist-card">
+      <div class="playlist-thumb">
+        🔐
+        <div class="playlist-count">3 VIDEOS</div>
+      </div>
+      <div class="playlist-info">
+        <h3>Secrets of Options Trading</h3>
+        <p>Uncovering truths retail traders don't know about options</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- TELEGRAM -->
+<section id="telegram">
+  <div class="telegram-layout">
+    <div class="telegram-info reveal">
+      <h2>Join the <span>Telegram</span><br>Community</h2>
+      <p>
+        Get real-time alerts, trading setups, and exclusive market insights directly on Telegram. 81+ active members getting premium content daily.
+      </p>
+      <div class="telegram-perks">
+        <div class="telegram-perk">
+          <div class="telegram-perk-icon">⚡</div>
+          Real-time impact alerts & market signals
+        </div>
+        <div class="telegram-perk">
+          <div class="telegram-perk-icon">📎</div>
+          Premium mentorship chapters & study materials
+        </div>
+        <div class="telegram-perk">
+          <div class="telegram-perk-icon">📊</div>
+          183+ chart photos & trading setups
+        </div>
+        <div class="telegram-perk">
+          <div class="telegram-perk-icon">🎓</div>
+          Educational content for all levels
+        </div>
+      </div>
+      <a href="https://t.me/optionedgetelugu" target="_blank" class="telegram-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        Join @optionedgetelugu
+      </a>
+    </div>
+
+    <div class="telegram-preview reveal">
+      <div class="tg-phone">
+        <div class="tg-header">
+          <div class="tg-avatar">⚡</div>
+          <div>
+            <div class="tg-channel-name">OPTION EDGE TELUGU</div>
+            <div class="tg-subs">81 SUBSCRIBERS</div>
+          </div>
+          <div class="tg-online">
+            <span style="width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 1.5s infinite;display:inline-block;"></span>
+            LIVE
+          </div>
+        </div>
+        <div class="tg-messages">
+          <div class="tg-msg">
+            🔴 <span class="lvl">NIFTY KEY LEVELS</span><br>
+            Support: <span class="bull">24,100</span> | Resistance: <span class="bear">24,320</span><br>
+            Watch for breakout above <span class="lvl">24,280</span>
+            <div class="tg-msg-time">23:11 ✓✓</div>
+          </div>
+          <div class="tg-msg">
+            Impact starting 🔴❤️‍🔥<br>
+            Global sell-off could push NIFTY to <span class="bear">23,800</span> zone. Be cautious!
+            <div class="tg-msg-time">23:11 ✓✓</div>
+          </div>
+          <div class="tg-msg">
+            📚 Premium mentorship chapter-1 now available. Check pinned message for link!
+            <div class="tg-msg-time">22:45 ✓✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="reveal">
+    <h2 class="cta-title">
+      Start Your<br><span>Trading Edge</span><br>Today
+    </h2>
+    <p class="cta-sub">Subscribe to the YouTube channel and join the Telegram community for daily market mastery.</p>
+    <div class="cta-buttons">
+      <a href="https://www.youtube.com/@optionedge9" target="_blank" class="btn-yt">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        Subscribe on YouTube
+      </a>
+      <a href="https://t.me/optionedgetelugu" target="_blank" class="btn-tg">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        Join Telegram
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Option Edge Telugu</div>
+  <p class="footer-disclaimer">
+    ⚠️ This channel is for educational purposes only. Content reflects personal views. Trading involves risk. Not financial advice.
+  </p>
+  <div class="footer-links">
+    <a href="https://www.youtube.com/@optionedge9" target="_blank">YouTube</a>
+    <a href="https://t.me/optionedgetelugu" target="_blank">Telegram</a>
+    <a href="https://ekyc.aliceblueonline.com/?source=SHYD1928" target="_blank">Open Demat</a>
+  </div>
+</footer>
+
+<script>
+// ====== CURSOR ======
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX - 6 + 'px';
+  cursor.style.top = e.clientY - 6 + 'px';
+  rx += (e.clientX - 18 - rx) * 0.12;
+  ry += (e.clientY - 18 - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+});
+
+function animateRing() {
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2)');
+  el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
+});
+
+// ====== CANVAS ANIMATED BG ======
+const canvas = document.getElementById('canvas-bg');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// Floating particles + chart lines
+const particles = [];
+for (let i = 0; i < 60; i++) {
+  particles.push({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4,
+    size: Math.random() * 2 + 0.5,
+    alpha: Math.random() * 0.5 + 0.1,
+    gold: Math.random() > 0.5
+  });
+}
+
+// Generate candlestick data
+const candles = [];
+let price = 24000;
+for (let i = 0; i < 80; i++) {
+  const open = price;
+  const change = (Math.random() - 0.48) * 120;
+  const close = open + change;
+  const high = Math.max(open, close) + Math.random() * 60;
+  const low = Math.min(open, close) - Math.random() * 60;
+  candles.push({ open, close, high, low });
+  price = close;
+}
+
+function drawCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw subtle candlestick chart in background
+  const cw = 10;
+  const startX = canvas.width * 0.05;
+  const midY = canvas.height * 0.6;
+  const scale = 0.3;
+
+  candles.forEach((c, i) => {
+    const x = startX + i * (cw + 4);
+    const isBull = c.close >= c.open;
+    ctx.strokeStyle = isBull ? 'rgba(0,255,136,0.12)' : 'rgba(255,59,59,0.12)';
+    ctx.fillStyle = isBull ? 'rgba(0,255,136,0.08)' : 'rgba(255,59,59,0.08)';
+    ctx.lineWidth = 1;
+
+    // Wick
+    ctx.beginPath();
+    ctx.moveTo(x + cw/2, midY - (c.high - 24000) * scale);
+    ctx.lineTo(x + cw/2, midY - (c.low - 24000) * scale);
+    ctx.stroke();
+
+    // Body
+    const bodyTop = midY - (Math.max(c.open, c.close) - 24000) * scale;
+    const bodyH = Math.abs(c.close - c.open) * scale || 1;
+    ctx.fillRect(x, bodyTop, cw, bodyH);
+    ctx.strokeRect(x, bodyTop, cw, bodyH);
+  });
+
+  // Draw connecting price line
+  ctx.beginPath();
+  ctx.strokeStyle = 'rgba(255,184,0,0.1)';
+  ctx.lineWidth = 1.5;
+  candles.forEach((c, i) => {
+    const x = startX + i * (cw + 4) + cw/2;
+    const y = midY - (c.close - 24000) * scale;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // Draw particles
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    if (p.x < 0) p.x = canvas.width;
+    if (p.x > canvas.width) p.x = 0;
+    if (p.y < 0) p.y = canvas.height;
+    if (p.y > canvas.height) p.y = 0;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = p.gold ? `rgba(255,184,0,${p.alpha})` : `rgba(100,120,180,${p.alpha})`;
+    ctx.fill();
+  });
+
+  requestAnimationFrame(drawCanvas);
+}
+drawCanvas();
+
+// ====== VIDEOS DATA ======
+const videosData = [
+  { title: "Global Market Crisis Coming? Monday Stock Market Analysis", views: "24", age: "21 hours ago", duration: "11:25", tag: "analysis", thumb: "🌍" },
+  { title: "Trump Rejects Iran Deal Proposal | Global Markets Panic", views: "47", age: "2 days ago", duration: "7:41", tag: "global", thumb: "📉" },
+  { title: "NIFTY50 Full Session | FII Tax Reduction Impact on Markets", views: "20", age: "3 days ago", duration: "5:38", tag: "analysis", thumb: "📊" },
+  { title: "NIFTY50 HIGH VOLATILITY DAY — FII Selling Continues", views: "69", age: "4 days ago", duration: "10:20", tag: "strategy", thumb: "⚡" },
+  { title: "Panic Selling Started in Stock Market? Nifty Falls 500 Points", views: "34", age: "5 days ago", duration: "7:30", tag: "analysis", thumb: "🐻" },
+  { title: "NIFTY50 Under Heavy Selling Pressure — Modi Statements Impact", views: "191", age: "6 days ago", duration: "7:45", tag: "global", thumb: "🔴" },
+  { title: "NIFTY50 Rallies 200 Points | Global Markets Cooling Off", views: "28", age: "2 weeks ago", duration: "10:34", tag: "analysis", thumb: "🚀" },
+  { title: "NIFTY50 Key Levels for Monday | Global Market Crash Fear", views: "38", age: "3 weeks ago", duration: "6:53", tag: "strategy", thumb: "🎯" },
+];
+
+function renderVideos(filter = 'all') {
+  const grid = document.getElementById('videosGrid');
+  const filtered = filter === 'all' ? videosData : videosData.filter(v => v.tag === filter);
+  grid.innerHTML = filtered.map(v => `
+    <a href="https://www.youtube.com/@optionedge9/videos" target="_blank" class="video-card">
+      <div class="video-thumb">
+        <div style="width:100%;height:100%;background:linear-gradient(135deg,#0d1428,#1a1200);display:flex;align-items:center;justify-content:center;font-size:60px;">${v.thumb}</div>
+        <div class="video-play-overlay">
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="video-duration">${v.duration}</div>
+      </div>
+      <div class="video-info">
+        <h3>${v.title}</h3>
+        <div class="video-meta">
+          <span class="video-views">👁 ${v.views} views</span>
+          <span class="video-age">${v.age}</span>
+        </div>
+      </div>
+    </a>
+  `).join('');
+}
+
+renderVideos();
+
+function filterVideos(tag, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderVideos(tag);
+}
+
+// ====== LIVE SESSIONS ======
+const liveData = [
+  { title: "LIVE TRADING NIFTY50 #sensex #bank #nifty50", duration: "5:58:35", age: "3 days ago", views: "38" },
+  { title: "LIVE TRADING NIFTY50 #sensex #bank #nifty50", duration: "4:38:36", age: "5 days ago", views: "20" },
+  { title: "LIVE TRADING NIFTY50 #sensex #bank #nifty50", duration: "21:34", age: "6 days ago", views: "34" },
+  { title: "LIVE TRADING NIFTY50 #sensex #bank #nifty50", duration: "1:21:41", age: "10 days ago", views: "110" },
+  { title: "LIVE TRADING NIFTY50 #sensex #bank #nifty50", duration: "3:11:17", age: "12 days ago", views: "4" },
+  { title: "LIVE TRADING NIFTY50 #sensex #bank #nifty50", duration: "3:47:29", age: "13 days ago", views: "22" },
+  { title: "LIVE TRADING NIFTY50 #sensex #bank #nifty50", duration: "3:12:42", age: "2 weeks ago", views: "18" },
+  { title: "LIVE TRADING NIFTY50 #sensex #bank #nifty50", duration: "2:06:47", age: "2 weeks ago", views: "130" },
+];
+
+const liveGrid = document.getElementById('liveGrid');
+liveGrid.innerHTML = liveData.map(l => `
+  <a href="https://www.youtube.com/@optionedge9/streams" target="_blank" class="live-card">
+    <div class="live-thumb">
+      <div class="live-thumb-inner">📡</div>
+      <div class="live-badge"><span class="dot"></span>LIVE</div>
+    </div>
+    <div class="live-card-info">
+      <h3>${l.title}</h3>
+      <div class="live-card-meta">
+        <span>👁 ${l.views} views</span>
+        <span>${l.age}</span>
+        <span>⏱ ${l.duration}</span>
+      </div>
+    </div>
+  </a>
+`).join('');
+
+// ====== SHORTS ======
+const shortsData = [
+  { title: "NIFTY50 BUYING PRESSURE TRIGGERS", views: "40 views", emoji: "📈" },
+  { title: "Nifty50 Strong Support Levels", views: "64 views", emoji: "🎯" },
+  { title: "NIFTY50 ANALYSIS FOR COMING SESSIONS", views: "57 views", emoji: "🔍" },
+  { title: "NIFTY50 STRONG RESISTANCE LEVELS", views: "75 views", emoji: "🛑" },
+  { title: "Nifty50 Full Trading Session", views: "48 views", emoji: "📊" },
+  { title: "NIFTY Morning Gaps Explained", views: "32 views", emoji: "⚡" },
+  { title: "Options Premium Decay", views: "89 views", emoji: "💰" },
+  { title: "Bank Nifty Key Levels", views: "56 views", emoji: "🏦" },
+];
+
+document.querySelector('.shorts-scroll').innerHTML = shortsData.map(s => `
+  <a href="https://www.youtube.com/@optionedge9/shorts" target="_blank" class="short-card">
+    <div class="short-thumb">
+      <span style="font-size:40px;z-index:1;position:relative;">${s.emoji}</span>
+      <div class="short-thumb-chart"></div>
+    </div>
+    <div class="short-info">
+      <span>${s.title}</span>
+      <span class="short-views">${s.views}</span>
+    </div>
+  </a>
+`).join('');
+
+// ====== COUNTER ANIMATION ======
+function animateCount(el, target) {
+  let current = 0;
+  const step = Math.ceil(target / 60);
+  const timer = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = current;
+    if (current >= target) clearInterval(timer);
+  }, 20);
+}
+
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.count);
+      animateCount(el, target);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+
+// ====== SCROLL REVEAL ======
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
