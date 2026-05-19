@@ -1414,6 +1414,120 @@ body.light-theme {
   border-color: var(--gold);
 }
 
+.video-modal{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  backdrop-filter: blur(10px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+  padding: 20px;
+}
+
+.video-modal.active{
+  display: flex;
+}
+
+.video-modal-content{
+  width: 100%;
+  max-width: 1100px;
+  aspect-ratio: 16/9;
+  background: #000;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 80px rgba(0,0,0,.7);
+}
+
+.video-modal-content iframe{
+  width: 100%;
+  height: 100%;
+}
+
+.close-video{
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 10;
+  transition: .3s ease;
+}
+
+.close-video:hover{
+  background: var(--gold);
+  color: #000;
+}
+
+/* ===== AI WHATSAPP BOT ===== */
+
+.ai-bot{
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 999999;
+  cursor: pointer;
+}
+
+.ai-bot-icon{
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#00c853,#00e676);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:32px;
+  box-shadow:
+    0 0 25px rgba(0,230,118,.5),
+    0 0 60px rgba(0,230,118,.25);
+
+  animation: botFloat 3s ease-in-out infinite;
+  transition:.3s;
+}
+
+.ai-bot:hover .ai-bot-icon{
+  transform: scale(1.08);
+}
+
+.ai-bot-tooltip{
+  position:absolute;
+  right:85px;
+  top:50%;
+  transform:translateY(-50%);
+  background:var(--surface);
+  color:var(--text);
+  padding:12px 16px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  font-size:14px;
+  font-weight:600;
+  white-space:nowrap;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+}
+
+.ai-bot:hover .ai-bot-tooltip{
+  opacity:1;
+}
+
+@keyframes botFloat{
+  0%,100%{
+    transform:translateY(0px);
+  }
+  50%{
+    transform:translateY(-8px);
+  }
+}
   /* Responsive */
   @media (max-width: 900px) {
     nav { padding: 16px 24px; }
@@ -1800,6 +1914,42 @@ document.addEventListener('mousemove', e => {
   ring.style.left = rx + 'px';
   ring.style.top = ry + 'px';
 });
+
+// ===== YOUTUBE MODAL PLAYER =====
+function openVideo(videoId){
+
+  const modal = document.getElementById('videoModal');
+  const player = document.getElementById('youtubePlayer');
+
+  player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+
+  modal.classList.add('active');
+
+  document.body.style.overflow = 'hidden';
+}
+
+function closeVideo(){
+
+  const modal = document.getElementById('videoModal');
+  const player = document.getElementById('youtubePlayer');
+
+  player.src = '';
+
+  modal.classList.remove('active');
+
+  document.body.style.overflow = 'auto';
+}
+
+window.addEventListener('click', (e)=>{
+
+  const modal = document.getElementById('videoModal');
+
+  if(e.target === modal){
+    closeVideo();
+  }
+
+});
+
 // ===== THEME TOGGLE =====
 const themeToggle = document.getElementById('themeToggle');
 
@@ -2059,6 +2209,76 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ===== WHATSAPP AI BOT =====
+function openWhatsAppBot() {
+
+  const message = encodeURIComponent(
+`Hello Option Edge Telugu 👋
+
+I visited your website and I want to know more about:
+
+📈 Trading Mentorship
+📚 Options Learning
+🔴 Live Sessions
+💹 Market Analysis
+
+Please guide me.`
+  );
+
+  window.open(
+    `https://wa.me/916304244760?text=${message}`,
+    '_blank'
+  );
+
+}
+
 </script>
+<!-- VIDEO MODAL -->
+<div class="video-modal" id="videoModal">
+  <div class="video-modal-content">
+
+    <button class="close-video" onclick="closeVideo()">✕</button>
+
+    <iframe
+      id="youtubePlayer"
+      src=""
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+
+  </div>
+</div>
+
+<!-- AI WHATSAPP BOT -->
+<div class="ai-bot" onclick="openWhatsAppBot()">
+
+  <div class="ai-bot-tooltip">
+    WhatsApp me
+  </div>
+<div class="ai-bot-icon">
+
+  <svg width="34" height="34" viewBox="0 0 32 32" fill="white">
+    <path d="M19.11 17.2c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.08-.3-.15-1.28-.47-2.43-1.5-.9-.8-1.5-1.8-1.68-2.1-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.48-.5-.67-.5h-.57c-.2 0-.52.08-.8.37-.27.3-1.05 1.02-1.05 2.5 0 1.47 1.07 2.9 1.22 3.1.15.2 2.1 3.2 5.1 4.48.7.3 1.25.47 1.67.6.7.22 1.35.2 1.85.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/>
+    <path d="M16.03 3C8.85 3 3 8.73 3 15.78c0 2.48.73 4.78 2 6.73L3.7 29l6.7-1.75a13.2 13.2 0 0 0 5.63 1.25c7.18 0 13.03-5.73 13.03-12.78C29.06 8.73 23.2 3 16.03 3zm0 23.3c-1.8 0-3.55-.48-5.08-1.4l-.37-.22-3.98 1.03 1.06-3.87-.24-.4a10.9 10.9 0 0 1-1.68-5.66c0-5.98 4.64-10.84 10.3-10.84 5.68 0 10.3 4.86 10.3 10.84 0 5.98-4.62 10.84-10.3 10.84z"/>
+  </svg>
+
+</div>
+</div>
+function openWhatsAppBot(){
+
+  const message =
+    encodeURIComponent(
+      "Hello Option Edge Telugu AI Bot 👋"
+    );
+
+  window.open(
+    `https://wa.me/916304244760?text=${message}`,
+    '_blank'
+  );
+
+}
 </body>
 </html>
