@@ -1623,7 +1623,7 @@ body.light-theme {
   <button id="themeToggle" class="theme-toggle">
   ☀️
 </button>
-  <a href="https://t.me/optionedgetelugu" target="_blank" class="nav-cta">Join Channel</a>
+  <a href="https://t.me/optionedgetelugu" target="_blank" class="nav-cta">Join Tele Channel</a>
 </nav>
 
 <!-- HERO -->
@@ -1641,12 +1641,12 @@ body.light-theme {
     </p>
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="hero-stat-num" data-count="489">0</div>
+        <div class="hero-stat-num" data-count="490">0</div>
         <div class="hero-stat-label">Subscribers</div>
       </div>
       <div class="hero-stat-divider"></div>
       <div class="hero-stat">
-        <div class="hero-stat-num" data-count="612">0</div>
+        <div class="hero-stat-num" data-count="616">0</div>
         <div class="hero-stat-label">Videos</div>
       </div>
       <div class="hero-stat-divider"></div>
@@ -1700,11 +1700,11 @@ body.light-theme {
         <div class="about-divider"></div>
         <div class="about-mini-stats">
           <div class="about-mini-stat">
-            <div class="about-mini-stat-n">489</div>
+            <div class="about-mini-stat-n">490</div>
             <div class="about-mini-stat-l">YT Subs</div>
           </div>
           <div class="about-mini-stat">
-            <div class="about-mini-stat-n">612</div>
+            <div class="about-mini-stat-n">616</div>
             <div class="about-mini-stat-l">Videos</div>
           </div>
           <div class="about-mini-stat">
@@ -1777,21 +1777,8 @@ body.light-theme {
   </div>
 
   <a href="https://www.youtube.com/@optionedge9/videos" target="_blank" class="view-all-btn reveal">
-    View All 612 Videos →
+    View All 616 Videos →
   </a>
-</section>
-
-<!-- SHORTS -->
-<section id="shorts">
-  <div class="section-header reveal">
-    <span class="section-tag">Quick Bites</span>
-    <h2 class="section-title">Shorts <span>&</span> Charts</h2>
-    <div class="section-line"></div>
-  </div>
-
-  <div class="shorts-scroll reveal">
-    <!-- Shorts cards -->
-  </div>
 </section>
 
 <!-- LIVE -->
@@ -2140,24 +2127,106 @@ function drawCanvas() {
 drawCanvas();
 
 // ====== VIDEOS DATA ======
+
 const videosData = [
-  { title: "Global Market Crisis Coming? Monday Stock Market Analysis", views: "24", age: "21 hours ago", duration: "11:25", tag: "analysis", thumb: "🌍" },
-  { title: "Trump Rejects Iran Deal Proposal | Global Markets Panic", views: "47", age: "2 days ago", duration: "7:41", tag: "global", thumb: "📉" },
-  { title: "NIFTY50 Full Session | FII Tax Reduction Impact on Markets", views: "20", age: "3 days ago", duration: "5:38", tag: "analysis", thumb: "📊" },
-  { title: "NIFTY50 HIGH VOLATILITY DAY — FII Selling Continues", views: "69", age: "4 days ago", duration: "10:20", tag: "strategy", thumb: "⚡" },
-  { title: "Panic Selling Started in Stock Market? Nifty Falls 500 Points", views: "34", age: "5 days ago", duration: "7:30", tag: "analysis", thumb: "🐻" },
-  { title: "NIFTY50 Under Heavy Selling Pressure — Modi Statements Impact", views: "191", age: "6 days ago", duration: "7:45", tag: "global", thumb: "🔴" },
-  { title: "NIFTY50 Rallies 200 Points | Global Markets Cooling Off", views: "28", age: "2 weeks ago", duration: "10:34", tag: "analysis", thumb: "🚀" },
-  { title: "NIFTY50 Key Levels for Monday | Global Market Crash Fear", views: "38", age: "3 weeks ago", duration: "6:53", tag: "strategy", thumb: "🎯" },
+
+  {
+    id: "G1vthTKOEsA",
+    title: "Global Market Crisis Coming? Monday Stock Market Analysis",
+    views: "24",
+    age: "21 hours ago",
+    duration: "11:25",
+    tag: "analysis",
+    thumbnail: "https://img.youtube.com/vi/G1vthTKOEsA/hqdefault.jpg"
+  },
+
+  {
+    id: "ENIpTEiz7Z4",
+    title: "Trump Rejects Iran Deal Proposal | Global Markets Panic",
+    views: "47",
+    age: "2 days ago",
+    duration: "7:41",
+    tag: "global",
+    thumbnail: "https://img.youtube.com/vi/ENIpTEiz7Z4/hqdefault.jpg"
+  },
+
+  {
+    id: "ce8XnGzKbh0",
+    title: "NIFTY50 Full Session | FII Tax Reduction Impact on Markets",
+    views: "20",
+    age: "3 days ago",
+    duration: "5:38",
+    tag: "analysis",
+    thumbnail: "https://img.youtube.com/vi/ce8XnGzKbh0/hqdefault.jpg"
+  },
+
+  {
+    id: "4WnCc8PSJAs",
+    title: "NIFTY50 HIGH VOLATILITY DAY — FII Selling Continues",
+    views: "69",
+    age: "4 days ago",
+    duration: "10:20",
+    tag: "strategy",
+    thumbnail: "https://img.youtube.com/vi/4WnCc8PSJAs/hqdefault.jpg"
+  },
+
+  {
+    id: "op_8bymquCs",
+    title: "Panic Selling Started in Stock Market? Nifty Falls 500 Points",
+    views: "34",
+    age: "5 days ago",
+    duration: "7:30",
+    tag: "analysis",
+    thumbnail: "https://img.youtube.com/vi/op_8bymquCs/hqdefault.jpg"
+  },
+
+  {
+    id: "uVDG5GnMLUw",
+    title: "NIFTY50 Under Heavy Selling Pressure — Modi Statements Impact",
+    views: "191",
+    age: "6 days ago",
+    duration: "7:45",
+    tag: "global",
+    thumbnail: "https://img.youtube.com/vi/uVDG5GnMLUw/hqdefault.jpg"
+  },
+
+  {
+    id: "BENHB11ofDo",
+    title: "NIFTY50 Rallies 200 Points | Global Markets Cooling Off",
+    views: "28",
+    age: "2 weeks ago",
+    duration: "10:34",
+    tag: "analysis",
+    thumbnail: "https://img.youtube.com/vi/BENHB11ofDo/hqdefault.jpg"
+  },
+
+  {
+    id: "7CFN1NMjfaM",
+    title: "NIFTY50 Key Levels for Monday | Global Market Crash Fear",
+    views: "38",
+    age: "3 weeks ago",
+    duration: "6:53",
+    tag: "strategy",
+    thumbnail: "https://img.youtube.com/vi/7CFN1NMjfaM/hqdefault.jpg"
+  }
+
 ];
 
 function renderVideos(filter = 'all') {
   const grid = document.getElementById('videosGrid');
   const filtered = filter === 'all' ? videosData : videosData.filter(v => v.tag === filter);
   grid.innerHTML = filtered.map(v => `
-    <a href="https://www.youtube.com/@optionedge9/videos" target="_blank" class="video-card">
+    <div class="video-card"
+     onclick="openVideo('${v.id}')">
       <div class="video-thumb">
-        <div style="width:100%;height:100%;background:linear-gradient(135deg,#0d1428,#1a1200);display:flex;align-items:center;justify-content:center;font-size:60px;">${v.thumb}</div>
+        <img
+  src="${v.thumbnail}"
+  style="
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  "
+/>
         <div class="video-play-overlay">
           <div class="play-btn">▶</div>
         </div>
@@ -2170,7 +2239,7 @@ function renderVideos(filter = 'all') {
           <span class="video-age">${v.age}</span>
         </div>
       </div>
-    </a>
+    </div>
   `).join('');
 }
 
@@ -2208,31 +2277,6 @@ liveGrid.innerHTML = liveData.map(l => `
         <span>${l.age}</span>
         <span>⏱ ${l.duration}</span>
       </div>
-    </div>
-  </a>
-`).join('');
-
-// ====== SHORTS ======
-const shortsData = [
-  { title: "NIFTY50 BUYING PRESSURE TRIGGERS", views: "40 views", emoji: "📈" },
-  { title: "Nifty50 Strong Support Levels", views: "64 views", emoji: "🎯" },
-  { title: "NIFTY50 ANALYSIS FOR COMING SESSIONS", views: "57 views", emoji: "🔍" },
-  { title: "NIFTY50 STRONG RESISTANCE LEVELS", views: "75 views", emoji: "🛑" },
-  { title: "Nifty50 Full Trading Session", views: "48 views", emoji: "📊" },
-  { title: "NIFTY Morning Gaps Explained", views: "32 views", emoji: "⚡" },
-  { title: "Options Premium Decay", views: "89 views", emoji: "💰" },
-  { title: "Bank Nifty Key Levels", views: "56 views", emoji: "🏦" },
-];
-
-document.querySelector('.shorts-scroll').innerHTML = shortsData.map(s => `
-  <a href="https://www.youtube.com/@optionedge9/shorts" target="_blank" class="short-card">
-    <div class="short-thumb">
-      <span style="font-size:40px;z-index:1;position:relative;">${s.emoji}</span>
-      <div class="short-thumb-chart"></div>
-    </div>
-    <div class="short-info">
-      <span>${s.title}</span>
-      <span class="short-views">${s.views}</span>
     </div>
   </a>
 `).join('');
@@ -2294,7 +2338,36 @@ Please guide me.`
   );
 
 }
+function openVideo(videoId){
 
+  const modal =
+    document.getElementById('videoModal');
+
+  const player =
+    document.getElementById('youtubePlayer');
+
+  player.src =
+    `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+
+  modal.classList.add('active');
+
+  document.body.style.overflow = 'hidden';
+}
+
+function closeVideo(){
+
+  const modal =
+    document.getElementById('videoModal');
+
+  const player =
+    document.getElementById('youtubePlayer');
+
+  player.src = '';
+
+  modal.classList.remove('active');
+
+  document.body.style.overflow = 'auto';
+}
 </script>
 <!-- TELEGRAM BOT -->
 <div class="telegram-bot" onclick="openTelegramBot()">
