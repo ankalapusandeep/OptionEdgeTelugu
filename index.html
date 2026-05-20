@@ -54,29 +54,7 @@ body.light-theme {
     font-family: 'Rajdhani', sans-serif;
     overflow-x: hidden;
     }
-
-  /* Custom Cursor */
-  .cursor {
-    position: fixed;
-    width: 12px; height: 12px;
-    background: var(--gold);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s;
-    mix-blend-mode: difference;
-  }
-  .cursor-ring {
-    position: fixed;
-    width: 36px; height: 36px;
-    border: 1.5px solid rgba(255,184,0,0.5);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transition: all 0.15s ease;
-  }
-
-  /* Scrollbar */
+/* Scrollbar */
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
@@ -1637,9 +1615,6 @@ body.light-theme {
 </head>
 <body>
 
-<!-- Custom Cursor -->
-<div class="cursor-ring" id="cursorRing"></div>
-
 <!-- Animated Canvas Background -->
 <canvas id="canvas-bg"></canvas>
 
@@ -1969,9 +1944,9 @@ body.light-theme {
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-brand">Option Edge Telugu</div>
+  <div class="footer-brand">       </div>
   <p class="footer-disclaimer">
-    ⚠️ This channel is for educational purposes only. Content reflects personal views. Trading involves risk. Not financial advice.
+    @2026 Option Edge Telugu. All rights reserved.
   </p>
   <div class="footer-links">
     <a href="https://www.youtube.com/@optionedge9" target="_blank">YouTube</a>
@@ -1990,19 +1965,7 @@ function openTelegramBot(){
   );
 
 }
-// ====== CURSOR ======
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let rx = 0, ry = 0;
 
-document.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX - 6 + 'px';
-  cursor.style.top = e.clientY - 6 + 'px';
-  rx += (e.clientX - 18 - rx) * 0.12;
-  ry += (e.clientY - 18 - ry) * 0.12;
-  ring.style.left = rx + 'px';
-  ring.style.top = ry + 'px';
-});
 
 // ===== YOUTUBE MODAL PLAYER =====
 function openVideo(videoId){
@@ -2057,18 +2020,6 @@ if(localStorage.getItem('theme') === 'light'){
   document.body.classList.add('light-theme');
   themeToggle.innerHTML = '🌙';
 }
-function animateRing() {
-  ring.style.left = rx + 'px';
-  ring.style.top = ry + 'px';
-  requestAnimationFrame(animateRing);
-}
-animateRing();
-
-document.querySelectorAll('a, button').forEach(el => {
-  el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2)');
-  el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
-});
-
 // ====== CANVAS ANIMATED BG ======
 const canvas = document.getElementById('canvas-bg');
 const ctx = canvas.getContext('2d');
@@ -2324,26 +2275,63 @@ liveGrid.innerHTML = liveData.map(l => `
 // ====== COUNTER ANIMATION ======
 function animateCount(el, target) {
   let current = 0;
-  const step = Math.ceil(target / 60);
-  const timer = setInterval(() => {
-    current = Math.min(current + step, target);
+  const duration = 1200;
+  const startTime = performance.now();
+
+  function update(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    current = Math.floor(progress * target);
     el.textContent = current;
-    if (current >= target) clearInterval(timer);
-  }, 20);
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    } else {
+      el.textContent = target;
+    }
+  }
+
+  requestAnimationFrame(update);
 }
 
-const counterObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const el = entry.target;
-      const target = parseInt(el.dataset.count);
-      animateCount(el, target);
-      counterObserver.unobserve(el);
-    }
-  });
-}, { threshold: 0.5 });
+function startCounters() {
+  document.querySelectorAll('[data-count]').forEach(el => {
+    if (el.dataset.animated === 'true') return;
 
-document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+    const target = Number(el.dataset.count || 0);
+    el.dataset.animated = 'true';
+    animateCount(el, target);
+  });
+}
+
+if ('IntersectionObserver' in window) {
+  const counterObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        if (el.dataset.animated === 'true') return;
+
+        const target = Number(el.dataset.count || 0);
+        el.dataset.animated = 'true';
+        animateCount(el, target);
+        counterObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+
+  setTimeout(() => {
+    document.querySelectorAll('[data-count]').forEach(el => {
+      if (el.textContent.trim() === '0') {
+        const target = Number(el.dataset.count || 0);
+        el.dataset.animated = 'true';
+        animateCount(el, target);
+      }
+    });
+  }, 500);
+} else {
+  startCounters();
+}
 
 // ====== SCROLL REVEAL ======
 const observer = new IntersectionObserver(entries => {
@@ -2458,18 +2446,5 @@ function closeVideo(){
 
 </div>
 </div>
-function openWhatsAppBot(){
-
-  const message =
-    encodeURIComponent(
-      "Hello Option Edge Telugu AI Bot 👋"
-    );
-
-  window.open(
-    `https://wa.me/916304244760?text=${message}`,
-    '_blank'
-  );
-
-}
 </body>
 </html>
